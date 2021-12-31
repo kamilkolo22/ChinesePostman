@@ -13,6 +13,7 @@ def chinese_postman(graph):
     # Szukamy wierzchołkow o nieparszystych stopniach i
     # łaczymy je jeśli takie istnieja
     odd_degree = find_odd_degree(graph)
+    to_connect = []
     if len(odd_degree) > 0:
         allocation_matrix = []
         paths = {}
@@ -28,7 +29,6 @@ def chinese_postman(graph):
         assigned = hungarian_algorithm(allocation_matrix.copy())
 
         # Pary wierzchołkow ktore bedziemy chcieli polaczyc sciezka
-        to_connect = []
         for pair in assigned:
             if not [odd_degree[pair[1]], odd_degree[pair[0]]] in to_connect:
                 to_connect.append([odd_degree[pair[0]], odd_degree[pair[1]]])
@@ -45,17 +45,18 @@ def chinese_postman(graph):
                     break
                 else:
                     v = raw_path[v]
-
+            # Dodajemy najkrótszą scieżkę
             for i in range(len(shortest_path) - 1):
                 # odczytujemy wage dla danej krawedzi
+                weight = 0
                 for w in range(len(graph[shortest_path[i]])):
                     if graph[shortest_path[i]][w][0] == shortest_path[i + 1]:
                         weight = graph[shortest_path[i]][w][1]
-                        # Dodajemy krawedz wraz z odpowiednia waga
+                # Dodajemy krawędź wraz z odpowiednią wagą
                 add_edge(graph, (shortest_path[i], shortest_path[i + 1]))
                 graph[shortest_path[i]][-1] = (shortest_path[i + 1], weight)
                 graph[shortest_path[i + 1]][-1] = (shortest_path[i], weight)
-    return dfs_euler_w(graph, 'A')
+    return dfs_euler_w(graph, list(graph.keys())[0]), to_connect
 
 
 def Dijkstra(wgraph, s):
@@ -91,16 +92,16 @@ def dfs_euler_w(graph, v, path=None):
     if len(graph[v]) > 0:
         for neighbor in graph[v]:  # u jeszce nie odwiedzony
             neighbor = neighbor[0]
+            # usuwamy neighbor na liscie sąsiadów v
             for i in range(len(graph[v])):
                 if graph[v][i][0] == neighbor:
                     del graph[v][i]
                     break
-            # graph[v].remove(neighbor)
+            # usuwamy v na liscie sąsiadów neighbor
             for i in range(len(graph[neighbor])):
                 if graph[neighbor][i][0] == v:
                     del graph[neighbor][i]
                     break
-            # graph[neighbor].remove(v)
             dfs_euler_w(graph, neighbor, path)
     path.append(v)
     return path

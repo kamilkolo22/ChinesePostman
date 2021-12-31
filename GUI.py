@@ -1,29 +1,31 @@
+import os
 from ToolBox import graph_from_edges
 from ChinesePostmanResult import chinese_postman
 from Plot import create_plot
+from tkinter.filedialog import askopenfilename
 
 
-class ButtonMethods:
-
-    def euler_graph_setup(self):
-        graph = graph_from_edges('data/graf_eulera.txt')
-        path = chinese_postman(graph)
-        create_plot(graph, path, 'euler')
+def resolve_graph(input_path, name):
+    graph = graph_from_edges(input_path)
+    path, to_connect = chinese_postman(graph)
+    create_plot(graph, path, name, to_connect)
 
 
-    def graph_2odd(self):
-        graph = graph_from_edges('data/graf_2odd.txt')
-        path = chinese_postman(graph)
-        create_plot(graph, path, 'graph_2odd')
+def move_files(window):
+    files = os.listdir()
+    for file in files:
+        if file[-5:] == '.html':
+            os.replace(file, f'output/{file}')
+    window.destroy()
 
 
-    def graph_4odd(self):
-        graph = graph_from_edges('data/graf_4odd.txt')
-        path = chinese_postman(graph)
-        create_plot(graph, path, 'graph_4odd')
-
-
-    def graph_6odd(self):
-        graph = graph_from_edges('data/graf_6odd.txt')
-        path = chinese_postman(graph)
-        create_plot(graph, path, 'graph_6odd')
+def ask_for_input():
+    filetypes = (
+        ('PDF files', '*.txt'),
+        ('All files', '*.*')
+    )
+    input_graph = askopenfilename(
+        title='Open a file',
+        initialdir='/',
+        filetypes=filetypes)
+    resolve_graph(input_graph, os.path.basename(input_graph))

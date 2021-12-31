@@ -38,7 +38,8 @@ def print_graph(graph):
 
 
 def graph_from_edges(filename, directed=False):
-    """Wczytuję graf z pliku tesktowego, który w każdej lini zawiera opis jednej krawędzi oraz waga danej krawedzi"""
+    """Wczytuję graf z pliku tesktowego, który w każdej lini
+    zawiera opis jednej krawędzi oraz waga danej krawedzi"""
     graph = {}
     with open(filename, 'r') as f:
         for line in f:
