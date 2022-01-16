@@ -28,4 +28,6 @@ def ask_for_input():
         title='Open a file',
         initialdir='/',
         filetypes=filetypes)
-    resolve_graph(input_graph, os.path.basename(input_graph))
+    name = os.path.basename(input_graph)
+    name = os.path.splitext(name)[0]
+    resolve_graph(input_graph, name)

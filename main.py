@@ -34,8 +34,8 @@ if __name__ == '__main__':
                      lambda e: resolve_graph('data/graf_6odd.txt', 'graf_6odd'))
     button_6odd.pack()
 
-    button_newgraph = tk.Button(text='Wybierz graf w postaci\n listy sąsiedstwa' +
-                                     ' z pliku', width=25, height=5)
+    button_newgraph = tk.Button(text='Wybierz graf w postaci\n listy ' +
+                                     'sąsiedstwa z pliku', width=25, height=5)
     button_newgraph.bind("<Button-1>", lambda e: ask_for_input())
     button_newgraph.pack()
 
